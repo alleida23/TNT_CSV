@@ -1,10 +1,17 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from function_clean_CSV import clean_CSV_file  # Update import statement
+from function_clean_CSV import process_csv_file
 
 # Streamlit app title
 st.title("TNT CSV CONVERTER TO EXCEL FILE")
+
+# Additional information and instructions
+st.write(" ")
+st.write(f"### Instructions:")
+st.write("1. Upload a CSV file by clicking on 'Upload a CSV TNT Express Report'.")
+st.write("2. Press the 'Convert' button to process and download the converted Excel file.")
+st.write(" ")
 
 # File uploader for CSV file
 uploaded_file = st.file_uploader("Upload a CSV TNT Express Report", type=["csv"])
@@ -17,7 +24,7 @@ if "conversion_done" not in st.session_state:
 if st.button("Convert") or st.session_state.conversion_done:
     if uploaded_file is not None:
         # Read the content of the uploaded CSV file
-        processed_csv, excel_name = clean_CSV_file(uploaded_file)
+        processed_csv, excel_name = process_csv_file(uploaded_file)
         
         # Convert DataFrame to Excel file
         processed_csv.to_excel(excel_name, index=False)
@@ -38,12 +45,3 @@ else:
     st.info("Upload a CSV TNT Report to convert.")
     st.info("After uploading, press the 'Convert' button to initiate the conversion.")
 
-# Additional information and instructions
-st.write(f"### Instructions:")
-st.write("1. Upload a CSV file by clicking on 'Upload a CSV TNT Express Report'.")
-st.write("2. Press the 'Convert' button to process and download the converted Excel file.")
-
-# Clean button to reset the app and clear session state
-if st.button("Clean"):
-    st.session_state.clear()
-    st.write("App reset. Upload a new CSV file to convert.")
