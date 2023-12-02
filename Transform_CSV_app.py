@@ -1,9 +1,4 @@
-import streamlit as st
-import pandas as pd
-from datetime import datetime
-from function_clean_CSV import process_csv_file
-
-# app.py
+# Transform_CSV_app.py
 
 import streamlit as st
 from function_clean_CSV import process_csv_file, cleanup_temp_files
@@ -41,12 +36,14 @@ if st.button("Convert") or st.session_state.conversion_done:
             # Provide download button
             st.download_button("Download TNT Report-Excel", file_name=excel_name)
 
+            # Clean up temporary files and uploaded file
+            cleanup_temp_files(excel_name, uploaded_file.name)
+
             # Set the conversion_done session state variable to True
             st.session_state.conversion_done = True
 
         except Exception as e:
             st.error(f"Error during Excel writing: {e}")
-
     else:
         st.warning("No file uploaded. Please upload a CSV TNT Report.")
 else:
@@ -54,7 +51,7 @@ else:
 
 # Clean button to remove temporary files and reset the app
 if st.button("Clean"):
-    cleanup_temp_files()
+    cleanup_temp_files(excel_name, uploaded_file.name)
     st.write("Temporary files cleaned.")
     
     # Reset the 'uploaded_file' variable to remove the file from "Browse files"
@@ -62,5 +59,3 @@ if st.button("Clean"):
 
     # Reset the app by clearing session state variables
     st.session_state.clear()
-
-

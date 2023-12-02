@@ -1,18 +1,9 @@
 
 def process_csv_file(csv_file):
-    """
-    Process the specified CSV file and save the result as an Excel file.
-
-    Parameters:
-    - csv_file (str): The file path of the input CSV file.
-
-    Returns:
-    - pd.DataFrame: The processed DataFrame.
-    - str: The file name of the generated Excel file.
-    """
+    
+    import os
     import pandas as pd
     from datetime import datetime
-    import openpyxl
     
     # Read CSV file
     csv = pd.read_csv(csv_file, sep=',""', header=0, encoding="utf-8", engine='python')
@@ -41,11 +32,6 @@ def process_csv_file(csv_file):
     for col in columns_to_capitalize:
         csv[col] = csv[col].str.capitalize()
 
-    # Handle the "description" column
-    # Assuming your description column is named "description"
-    if 'description' in csv.columns:
-        csv['description'] = csv['description'].str.upper()  # Replace with your desired operation
-
     # Generate a timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -56,3 +42,16 @@ def process_csv_file(csv_file):
     csv.to_excel(excel_name, index=False)
 
     return csv, excel_name
+
+def cleanup_temp_files(excel_path, csv_path, uploaded_file_path):
+    # Delete the temporary Excel file
+    if os.path.exists(excel_path):
+        os.remove(excel_path)
+
+    # Delete the temporary CSV file
+    if os.path.exists(csv_path):
+        os.remove(csv_path)
+
+    # Delete the uploaded file
+    if os.path.exists(uploaded_file_path):
+        os.remove(uploaded_file_path)
