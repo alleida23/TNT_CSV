@@ -4,6 +4,7 @@ def process_csv_file(csv_file):
     import os
     import pandas as pd
     from datetime import datetime
+    import openpyxl
     
     # Read CSV file
     csv = pd.read_csv(csv_file, sep=',""', header=0, encoding="utf-8", engine='python')
