@@ -3,8 +3,13 @@ import pandas as pd
 from datetime import datetime
 from function_clean_CSV import process_csv_file
 
+# app.py
+
+import streamlit as st
+from function_clean_CSV import process_csv_file, cleanup_temp_files
+
 # Streamlit app title
-st.title("TNT CSV CONVERTER TO EXCEL FILE")
+st.title("TNT Report CSV Converter To EXCEL")
 
 # Additional information and instructions
 st.write(" ")
@@ -27,21 +32,35 @@ if st.button("Convert") or st.session_state.conversion_done:
         processed_csv, excel_name = process_csv_file(uploaded_file)
         
         # Convert DataFrame to Excel file
-        processed_csv.to_excel(excel_name, index=False)
+        try:
+            processed_csv.to_excel(excel_name, index=False)
+            st.write(f" ")
+            st.success("**Successful Conversion to Excel File**")
+            st.write(f"Download your converted file below.")
+            
+            # Provide download button
+            st.download_button("Download TNT Report-Excel", file_name=excel_name)
 
-        st.write(f" ")
-        st.success("**Successful Conversion to Excel File**")
-        st.write(f"Download your converted file below.")
-        
-        # Provide download button
-        st.download_button("Download TNT Report-Excel", file_name=excel_name)
+            # Set the conversion_done session state variable to True
+            st.session_state.conversion_done = True
 
-        # Set the conversion_done session state variable to True
-        st.session_state.conversion_done = True
+        except Exception as e:
+            st.error(f"Error during Excel writing: {e}")
 
     else:
         st.warning("No file uploaded. Please upload a CSV TNT Report.")
 else:
     st.info("Upload a CSV TNT Report to convert.")
-    st.info("After uploading, press the 'Convert' button to initiate the conversion.")
+
+# Clean button to remove temporary files and reset the app
+if st.button("Clean"):
+    cleanup_temp_files()
+    st.write("Temporary files cleaned.")
+    
+    # Reset the 'uploaded_file' variable to remove the file from "Browse files"
+    uploaded_file = None
+
+    # Reset the app by clearing session state variables
+    st.session_state.clear()
+
 
