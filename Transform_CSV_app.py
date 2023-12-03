@@ -63,6 +63,13 @@ if st.button("Convert") or st.session_state.conversion_done:
             # 9) Generate a timestamp to add to the title
             timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
+            # 10) Preview first 5 rows
+            csv.head(5)
+
+            # 11) Print the shape of the DataFrame
+            st.write(f"Shape of the DataFrame: {csv.shape}")
+
+
             # Specify the desired CSV file name
             csv_file_name = f'TNT_Track_Report_{timestamp}.csv'
 
