@@ -31,7 +31,6 @@ if st.button("Convert") or st.session_state.conversion_done:
 
             # 1) Remove leading and trailing whitespaces from column names and all values in all columns
             csv.columns = csv.columns.str.strip('"')
-            st.write(csv.columns)
             csv = csv.apply(lambda x: x.str.strip('"'))
 
             # 2) Remove "/" from 'Shipment reference'
@@ -58,8 +57,8 @@ if st.button("Convert") or st.session_state.conversion_done:
             for col in columns_to_capitalize:
                 csv[col] = csv[col].str.title()
 
-            for col_name in csv.columns:
-                col_name.str.title()
+            # Title-case the column names
+            csv.columns = csv.columns.str.title()
             
             # 8) Generate a timestamp
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
