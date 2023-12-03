@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 import subprocess
 from io import BytesIO
+import plotly.express as px
 
 # Streamlit app title
 st.title("TNT Express Report CSV Converter")
@@ -52,7 +53,23 @@ if st.button("Convert") or st.session_state.conversion_done:
             for col in columns_to_capitalize:
                 csv[col] = csv[col].str.title()
 
-            # 7) Generate a timestamp
+            # 7) Horizontal bar plot Status Count
+            st.title("Tracking Status Count")
+            
+            # Create a horizontal bar chart
+            fig = px.bar(
+                csv['Tracking status'].value_counts().reset_index(),
+                x='Tracking status',
+                y='index',
+                orientation='h',
+                labels={'index': 'Tracking Status', 'Tracking status': 'Count'},
+                title='Tracking Status Count'
+            )
+            
+            # Show the chart in Streamlit app
+            st.plotly_chart(fig)
+            
+            # 8) Generate a timestamp
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
             # Specify the desired CSV file name
@@ -74,3 +91,20 @@ if st.button("Convert") or st.session_state.conversion_done:
         except Exception as e:
             # Handle exceptions, e.g., invalid CSV format
             st.error(f"Error reading CSV file: {e}")
+
+# Clean button
+if st.button("Clean"):
+    # Clear uploaded file
+    uploaded_file = None
+
+    # Clear processed data
+    csv = pd.DataFrame()
+
+    # Clear session state variables
+    st.session_state.conversion_done = False
+
+    # Additional cleanup if needed
+    # ...
+
+    st.success("All data and traces have been cleared.")
+
