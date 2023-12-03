@@ -30,7 +30,7 @@ if st.button("Convert") or st.session_state.conversion_done:
             csv = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python', quotechar='"')
 
             # 1) Remove leading and trailing whitespaces from column names and all values in all columns
-            csv.columns = csv.columns.str.strip('"').title()
+            csv.columns = csv.columns.str.strip('"')
             st.write(csv.columns)
             csv = csv.apply(lambda x: x.str.strip('"'))
 
@@ -46,17 +46,20 @@ if st.button("Convert") or st.session_state.conversion_done:
             # 5) Convert 'Total volume' to float with 3 decimals
             csv['Total volume'] = csv['Total volume'].astype(float).round(3)
 
-            # 6) List of columns to capitalize
+            # 6) Display count for each unique category in 'Tracking status'
+            tracking_status_count = csv['Tracking status'].value_counts()
+            st.write("Tracking Status Count:")
+            st.write(tracking_status_count)
+
+            # 7) List of columns to capitalize
             columns_to_capitalize = ['Sender contact name', 'Sender city', 'Collection city', 'Receiver city', 'Delivery city', 'Tracking status']
 
             # Loop through specified columns and capitalize values
             for col in columns_to_capitalize:
                 csv[col] = csv[col].str.title()
 
-            # 7) Display count for each unique category in 'Tracking status'
-            tracking_status_count = csv['Tracking status'].value_counts()
-            st.write("Tracking Status Count:")
-            st.write(tracking_status_count)
+            for col_name in csv.columns:
+                col_name.str.title()
             
             # 8) Generate a timestamp
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
