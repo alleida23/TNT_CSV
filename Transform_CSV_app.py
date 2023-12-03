@@ -30,7 +30,8 @@ if st.button("Convert") or st.session_state.conversion_done:
             csv = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python', quotechar='"')
 
             # 1) Remove leading and trailing whitespaces from column names and all values in all columns
-            csv.columns = csv.columns.str.strip('"')
+            csv.columns = csv.columns.str.strip('"').title()
+            st.write(csv.columns)
             csv = csv.apply(lambda x: x.str.strip('"'))
 
             # 2) Remove "/" from 'Shipment reference'
