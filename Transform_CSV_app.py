@@ -5,13 +5,10 @@ import subprocess
 from io import BytesIO
 
 # Install openpyxl within the Streamlit app
-subprocess.run(["pip", "install", "openpyxl"])
-
-# Import openpyxl
-import openpyxl
+#subprocess.run(["pip", "install", "openpyxl"])
 
 # Streamlit app title
-st.title("TNT Report CSV Converter To EXCEL")
+st.title("TNT Report CSV Converter")
 
 # Additional information and instructions
 st.write(" ")
@@ -31,41 +28,38 @@ if "conversion_done" not in st.session_state:
 if st.button("Convert") or st.session_state.conversion_done:
     if uploaded_file is not None:
         try:
-            
             # 0) Read the content of the uploaded CSV file
-            csv = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python')
-            
+            # Use the correct separator
+            csv = pd.read_csv(uploaded_file, sep=',', header=0, encoding="utf-8")
+
             # 1) Remove leading and trailing whitespaces from column names and all values in all columns
-            csv.columns = csv.columns.str.strip('"')
-            csv = csv.apply(lambda x: x.str.strip('"'))
-                
+            csv.columns = csv.columns.str.strip()
+            csv = csv.apply(lambda x: x.str.strip())
+
             # 2) Remove "/" from 'Shipment reference'
             csv['Shipment reference'] = csv['Shipment reference'].str.replace('/', '')
-                
+
             # 3) Convert 'Number of Packages' to integer
             csv['Number of Packages'] = csv['Number of Packages'].astype(int)
-                
+
             # 4) Convert 'Total weight' to float with 1 decimal
             csv['Total weight'] = csv['Total weight'].astype(float).round(1)
-                
+
             # 5) Convert 'Total volume' to float with 3 decimals
             csv['Total volume'] = csv['Total volume'].astype(float).round(3)
-                
+
             # 6) List of columns to capitalize
             columns_to_capitalize = ['Sender contact name', 'Sender city', 'Collection city', 'Receiver city', 'Delivery city', 'Tracking status']
-                
+
             # Loop through specified columns and capitalize values
             for col in columns_to_capitalize:
                 csv[col] = csv[col].str.title()
-                
+
             # 7) Generate a timestamp
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                
+
             # Specify the desired Excel file name
             excel_file_name = f'TNT_Track_Report_{timestamp}.xlsx'
-            
-            #st.write(csv.head(2))
-            #st.write(f"{excel_file_name}")
 
             # Create a BytesIO object to store Excel file in memory
             excel_data = BytesIO()
@@ -80,6 +74,15 @@ if st.button("Convert") or st.session_state.conversion_done:
                 file_name=excel_file_name,
                 key="download_excel_button",
                 help="Click here to download the Excel file."
+            )
+
+            # Add a download button for the CSV file
+            csv_data = csv.to_csv(index=False).encode()
+            st.download_button(
+                label="Download CSV File",
+                data=csv_data,
+                file_name=f'TNT_Track_Report_{timestamp}.csv',
+                help="Click here to download the CSV file."
             )
 
             # Set the conversion flag to True
