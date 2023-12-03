@@ -10,7 +10,7 @@ st.title("TNT Report CSV Converter To EXCEL")
 
 # Additional information and instructions
 st.write(" ")
-st.info(f"### Instructions:")
+st.write(f"### Instructions:")
 st.info("1. Upload a CSV file by clicking on 'Upload a CSV TNT Express Report'.")
 st.info("2. Press the 'Convert' button to process and download the converted Excel file.")
 st.write(" ")
@@ -49,7 +49,7 @@ if st.button("Convert") or st.session_state.conversion_done:
     else:
         st.warning("No file uploaded. Please upload a CSV TNT Report.")
 else:
-    st.write("Upload a CSV TNT Report to convert.")
+    #st.write("Upload a CSV TNT Report to convert.")
 
 # Clean button to remove temporary files and reset the app
 if st.button("Clean"):
