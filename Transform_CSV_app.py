@@ -68,7 +68,7 @@ if st.button("Convert") or st.session_state.conversion_done:
             st.write(csv.head(5))
 
             # 11) Print the shape of the DataFrame
-            st.write(f"Shape of the DataFrame: {csv.shape}")
+            st.write(f"Shape: {csv.shape}")
 
 
             # Specify the desired CSV file name
