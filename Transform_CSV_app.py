@@ -58,13 +58,15 @@ if st.button("Convert") or st.session_state.conversion_done:
             st.write(csv.head(2))
             st.write(f"{excel_file_name}")
 
-            excel_file = csv.to_excel(excel_file_name, index=False)
+            # Save the Excel file without using openpyxl
+            csv.to_excel(excel_file_name, index=False)
 
             # Add a download button for the Excel file
             st.download_button(
                 label="Download Excel File",
-                data=excel_file,
+                data=None,
                 file_name=excel_file_name,
+                key="download_excel_button",
                 help="Click here to download the Excel file."
             )
 
