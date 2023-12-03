@@ -33,7 +33,7 @@ if st.button("Convert") or st.session_state.conversion_done:
             # Use pandas to read the CSV content with the specified separator
             processed_csv = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python')
 
-            display(processed_csv.head(2))
+            st.write(processed_csv.head(2))
 
             # ... (the rest of your conversion logic)
 
