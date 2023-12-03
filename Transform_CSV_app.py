@@ -2,6 +2,11 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+import subprocess
+
+# Install openpyxl within the Streamlit app
+subprocess.run(["pip", "install", "openpyxl"])
+
 
 # Streamlit app title
 st.title("TNT Report CSV Converter To EXCEL")
