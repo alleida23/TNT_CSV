@@ -45,23 +45,23 @@ if st.button("Convert") or st.session_state.conversion_done:
             # 5) Convert 'Total volume' to float with 3 decimals
             csv['Total volume'] = csv['Total volume'].astype(float).round(3)
 
-            # 6) Display count for each unique category in 'Tracking status'
-            tracking_status_count = csv['Tracking status'].value_counts()
-            st.write("Tracking Status Count:")
-            st.write(tracking_status_count)
-
-            # 7) List of columns to capitalize
+            # 6) List of columns to capitalize
             columns_to_capitalize = ['Sender contact name', 'Sender city', 'Collection city', 'Receiver city', 'Delivery city', 'Tracking status']
 
             # Loop through specified columns and capitalize values
             for col in columns_to_capitalize:
                 csv[col] = csv[col].str.title()
 
-            # Title-case the column names
+            # 7) Title-case the column names
             csv.columns = csv.columns.str.title()
+
+            # 8) Display count for each unique category in 'Tracking status'
+            tracking_status_count = csv['Tracking Status'].value_counts()
+            st.write("Tracking Status Count:")
+            st.write(tracking_status_count)
             
-            # 8) Generate a timestamp
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            # 9) Generate a timestamp to add to the title
+            timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
             # Specify the desired CSV file name
             csv_file_name = f'TNT_Track_Report_{timestamp}.csv'
