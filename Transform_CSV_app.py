@@ -5,7 +5,7 @@ import subprocess
 from io import BytesIO
 
 # Install openpyxl within the Streamlit app
-#subprocess.run(["pip", "install", "openpyxl"])
+subprocess.run(["pip", "install", "openpyxl"])
 
 # Streamlit app title
 st.title("TNT Express Report CSV Converter")
