@@ -53,7 +53,7 @@ if st.button("Convert") or st.session_state.conversion_done:
         st.warning("No file uploaded. Please upload a CSV TNT Report.")
 else:
     # Display a message if conversion has not been done
-    # st.write("Upload a CSV TNT Report to convert.")
+     st.write(" ")
 
 # Clean button to remove temporary files and reset the app
 if st.button("Clean"):
