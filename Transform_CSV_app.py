@@ -49,7 +49,8 @@ if st.button("Convert") or st.session_state.conversion_done:
                 
             # Loop through specified columns and capitalize values
             for col in columns_to_capitalize:
-                csv[col] = csv[col].str.capitalize()
+                #csv[col] = csv[col].str.capitalize()
+                csv[col] = csv[col].str.title()
                 
             # Generate a timestamp
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
