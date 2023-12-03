@@ -1,8 +1,8 @@
 # Transform_CSV_app.py
 
+# Import necessary libraries
 import streamlit as st
 from function_clean_CSV import process_csv_file, cleanup_temp_files
-#import openpyxl
 import pandas as pd
 
 # Streamlit app title
@@ -30,12 +30,13 @@ if st.button("Convert") or st.session_state.conversion_done:
         
         # Convert DataFrame to Excel file
         try:
+            # Writing the processed CSV to an Excel file
             processed_csv.to_excel(excel_name, index=False)
+            
+            # Display success message and provide download button
             st.write(f" ")
             st.success("**Successful Conversion to Excel File**")
             st.write(f"Download your converted file below.")
-            
-            # Provide download button
             st.download_button("Download TNT Report-Excel", file_name=excel_name)
 
             # Clean up temporary files and uploaded file
@@ -45,14 +46,18 @@ if st.button("Convert") or st.session_state.conversion_done:
             st.session_state.conversion_done = True
 
         except Exception as e:
+            # Display error message in case of an exception
             st.error(f"Error during Excel writing: {e}")
     else:
+        # Display a warning if no file is uploaded
         st.warning("No file uploaded. Please upload a CSV TNT Report.")
 else:
-    #st.write("Upload a CSV TNT Report to convert.")
+    # Display a message if conversion has not been done
+    # st.write("Upload a CSV TNT Report to convert.")
 
 # Clean button to remove temporary files and reset the app
 if st.button("Clean"):
+    # Clean up temporary files
     cleanup_temp_files(excel_name, uploaded_file.name)
     st.write("Temporary files cleaned.")
     
