@@ -3,7 +3,6 @@ import pandas as pd
 from datetime import datetime
 import subprocess
 from io import BytesIO
-import plotly.express as px
 
 # Streamlit app title
 st.title("TNT Express Report CSV Converter")
@@ -53,18 +52,13 @@ if st.button("Convert") or st.session_state.conversion_done:
             for col in columns_to_capitalize:
                 csv[col] = csv[col].str.title()
 
-            # 7) Horizontal bar plot Status Count
+            # 7) Display count for each unique category in 'Tracking status'
             st.title("Tracking Status Count")
             
-            # Create a horizontal bar chart
-            fig = px.bar(
-                csv['Tracking status'].value_counts().reset_index(),
-                x='Tracking status',
-                y='index',
-                orientation='h',
-                labels={'index': 'Tracking Status', 'Tracking status': 'Count'},
-                title='Tracking Status Count'
-            )
+            # Print the count for each unique category in 'Tracking status'
+            tracking_status_count = csv['Tracking status'].value_counts()
+            st.write("Tracking Status Count:")
+            st.write(tracking_status_count)
             
             # Show the chart in Streamlit app
             st.plotly_chart(fig)
