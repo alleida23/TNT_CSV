@@ -64,7 +64,8 @@ if st.button("Convert") or st.session_state.conversion_done:
             timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
             # 10) Preview first 5 rows
-            csv.head(5)
+            st.write("Preview:")
+            st.write(csv.head(5))
 
             # 11) Print the shape of the DataFrame
             st.write(f"Shape of the DataFrame: {csv.shape}")
