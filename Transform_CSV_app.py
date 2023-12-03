@@ -29,8 +29,7 @@ if st.button("Convert") or st.session_state.conversion_done:
     if uploaded_file is not None:
         try:
             # 0) Read the content of the uploaded CSV file
-            # Use the correct separator
-            csv = pd.read_csv(uploaded_file, sep=',', header=0, encoding="utf-8")
+            csv = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python')
 
             # 1) Remove leading and trailing whitespaces from column names and all values in all columns
             csv.columns = csv.columns.str.strip()
