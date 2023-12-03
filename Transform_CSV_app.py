@@ -7,6 +7,9 @@ from io import BytesIO
 # Install openpyxl within the Streamlit app
 subprocess.run(["pip", "install", "openpyxl"])
 
+# Import openpyxl
+import openpyxl
+
 # Streamlit app title
 st.title("TNT Report CSV Converter To EXCEL")
 
