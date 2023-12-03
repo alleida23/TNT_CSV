@@ -25,44 +25,60 @@ if "conversion_done" not in st.session_state:
 # Convert button
 if st.button("Convert") or st.session_state.conversion_done:
     if uploaded_file is not None:
-        # Read the content of the uploaded CSV file
-        processed_csv, excel_name = process_csv_file(uploaded_file)
-        
-        # Convert DataFrame to Excel file
         try:
-            # Writing the processed CSV to an Excel file
-            processed_csv.to_excel(excel_name, index=False)
-            
-            # Display success message and provide download button
-            st.write(f" ")
-            st.success("**Successful Conversion to Excel File**")
-            st.write(f"Download your converted file below.")
-            st.download_button("Download TNT Report-Excel", file_name=excel_name)
+            # Read the content of the uploaded CSV file
+            content = uploaded_file.read().decode('utf-8')
+            # Separator (',""')
+            separator = ',""'
+            # Use pandas to read the CSV content with the specified separator
+            processed_csv = pd.read_csv(pd.compat.StringIO(content), sep=separator, header=0, encoding="utf-8", engine='python')
 
-            # Clean up temporary files and uploaded file
-            cleanup_temp_files(excel_name, uploaded_file.name)
+            display(processed_csv.head(2))
 
-            # Set the conversion_done session state variable to True
-            st.session_state.conversion_done = True
+            # ... (the rest of your conversion logic)
 
         except Exception as e:
+            # Handle exceptions, e.g., invalid CSV format
+            st.error(f"Error reading CSV file: {e}")
+        
+        
+     #   processed_csv, excel_name = process_csv_file(uploaded_file)
+        
+        # Convert DataFrame to Excel file
+      #  try:
+            # Writing the processed CSV to an Excel file
+       #     processed_csv.to_excel(excel_name, index=False)
+            
+            # Display success message and provide download button
+        #    st.write(f" ")
+        #    st.success("**Successful Conversion to Excel File**")
+        #    st.write(f"Download your converted file below.")
+        #    st.download_button("Download TNT Report-Excel", file_name=excel_name)
+
+            # Clean up temporary files and uploaded file
+         #   cleanup_temp_files(excel_name, uploaded_file.name)
+
+            # Set the conversion_done session state variable to True
+          #  st.session_state.conversion_done = True
+
+#        except Exception as e:
             # Display error message in case of an exception
-            st.error(f"Error during Excel writing: {e}")
-    else:
+ #           st.error(f"Error during Excel writing: {e}")
+  #  else:
         # Display a warning if no file is uploaded
-        st.warning("No file uploaded. Please upload a CSV TNT Report.")
-else:
+   #     st.warning("No file uploaded. Please upload a CSV TNT Report.")
+#else:
     # Display a message if conversion has not been done
-     st.write(" ")
+ #    st.write(" ")
 
 # Clean button to remove temporary files and reset the app
-if st.button("Clean"):
+#if st.button("Clean"):
     # Clean up temporary files
-    cleanup_temp_files(excel_name, uploaded_file.name)
-    st.write("Temporary files cleaned.")
+ #   cleanup_temp_files(excel_name, uploaded_file.name)
+  #  st.write("Temporary files cleaned.")
     
     # Reset the 'uploaded_file' variable to remove the file from "Browse files"
-    uploaded_file = None
+   # uploaded_file = None
 
     # Reset the app by clearing session state variables
-    st.session_state.clear()
+    #st.session_state.clear()
