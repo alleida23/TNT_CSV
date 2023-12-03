@@ -27,11 +27,11 @@ if st.button("Convert") or st.session_state.conversion_done:
     if uploaded_file is not None:
         try:
             # Read the content of the uploaded CSV file
-            content = uploaded_file.read().decode('utf-8')
+            #content = uploaded_file.read().decode('utf-8')
             # Separator (',""')
-            separator = ',""'
+            #separator = ',""'
             # Use pandas to read the CSV content with the specified separator
-            processed_csv = pd.read_csv(pd.compat.StringIO(content), sep=separator, header=0, encoding="utf-8", engine='python')
+            processed_csv = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python')
 
             display(processed_csv.head(2))
 
