@@ -4,9 +4,6 @@ from datetime import datetime
 import subprocess
 from io import BytesIO
 
-# Install openpyxl within the Streamlit app
-subprocess.run(["pip", "install", "openpyxl"])
-
 # Streamlit app title
 st.title("TNT Express Report CSV Converter")
 
@@ -14,7 +11,7 @@ st.title("TNT Express Report CSV Converter")
 st.write(" ")
 st.write(f"### Instructions:")
 st.info("1. Upload a CSV file by clicking on 'Upload a CSV TNT Express Report'.")
-st.info("2. Press the 'Convert' button to process and download the converted Excel or CSV file.")
+st.info("2. Press the 'Convert' button to process and download the converted CSV file.")
 st.write(" ")
 
 # File uploader for CSV file
@@ -58,30 +55,16 @@ if st.button("Convert") or st.session_state.conversion_done:
             # 7) Generate a timestamp
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-            # Specify the desired Excel file name
-            excel_file_name = f'TNT_Track_Report_{timestamp}.xlsx'
-
-            # Create a BytesIO object to store Excel file in memory
-            excel_data = BytesIO()
-
-            # Write the Excel file to the BytesIO object
-            csv.to_excel(excel_data, index=False, engine='openpyxl')
-
-            # Add a download button for the Excel file
-            st.download_button(
-                label="Download Excel File",
-                data=excel_data.getvalue(),
-                file_name=excel_file_name,
-                key="download_excel_button",
-                help="Click here to download the Excel file."
-            )
+            # Specify the desired CSV file name
+            csv_file_name = f'TNT_Track_Report_{timestamp}.csv'
 
             # Add a download button for the CSV file
             csv_data = csv.to_csv(index=False).encode()
             st.download_button(
                 label="Download CSV File",
                 data=csv_data,
-                file_name=f'TNT_Track_Report_{timestamp}.csv',
+                file_name=csv_file_name,
+                key="download_csv_button",
                 help="Click here to download the CSV file."
             )
 
