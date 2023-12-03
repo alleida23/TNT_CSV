@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
+from io import BytesIO
 
 # Streamlit app title
 st.title("TNT Report CSV Converter To EXCEL")
@@ -58,10 +59,16 @@ if st.button("Convert") or st.session_state.conversion_done:
             st.write(csv.head(2))
             st.write(f"{excel_file_name}")
 
+            # Create a BytesIO object to store Excel file in memory
+            excel_data = BytesIO()
+
+            # Write the Excel file to the BytesIO object
+            csv.to_excel(excel_data, index=False, engine='openpyxl')
+
             # Add a download button for the Excel file
             st.download_button(
                 label="Download Excel File",
-                data=csv.to_excel(index=False, engine='openpyxl'),
+                data=excel_data.getvalue(),
                 key="download_excel_button",
                 file_name=excel_file_name,
                 help="Click here to download the Excel file."
