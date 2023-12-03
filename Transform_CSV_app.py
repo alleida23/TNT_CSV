@@ -108,4 +108,7 @@ if st.button("Clean"):
     # Clear all displayed content
     st.empty()
 
+    # Remove the file uploader
+    file_uploader_placeholder = st.empty()
+
     st.success("All data and traces have been cleared.")
