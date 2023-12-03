@@ -53,15 +53,9 @@ if st.button("Convert") or st.session_state.conversion_done:
                 csv[col] = csv[col].str.title()
 
             # 7) Display count for each unique category in 'Tracking status'
-            st.title("Tracking Status Count")
-            
-            # Print the count for each unique category in 'Tracking status'
             tracking_status_count = csv['Tracking status'].value_counts()
             st.write("Tracking Status Count:")
             st.write(tracking_status_count)
-            
-            # Show the chart in Streamlit app
-            st.plotly_chart(fig)
             
             # 8) Generate a timestamp
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
