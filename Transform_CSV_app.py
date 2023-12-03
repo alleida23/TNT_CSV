@@ -52,19 +52,24 @@ if st.button("Transform") or st.session_state.transformation_done:
             # 7) Title-case the column names
             csv.columns = csv.columns.str.title()
 
-            # 8) Preview first 5 rows
+            # 8) Check for empty columns and delete them
+            empty_columns = [col for col in csv.columns if csv[col].empty]
+            csv = csv.drop(columns=empty_columns)
+            st.write(f"Empty columns eliminated: {', '.join(empty_columns)}")
+
+            # 9) Preview first 5 rows
             st.write("Preview:")
             st.write(csv.head(5))
 
-            # 9) Print the shape of the DataFrame
+            # 10) Print the shape of the DataFrame
             st.write(f"Shape: {csv.shape}")
 
-            # 10) Display count for each unique category in 'Tracking status'
+            # 11) Display count for each unique category in 'Tracking status'
             tracking_status_count = csv['Tracking Status'].value_counts()
             st.write("Tracking Status Count:")
             st.write(tracking_status_count)
 
-            # 11) Generate a timestamp to add to the title
+            # 12) Generate a timestamp to add to the title
             timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
             # Specify the desired CSV file name
