@@ -27,18 +27,45 @@ if st.button("Convert") or st.session_state.conversion_done:
     if uploaded_file is not None:
         try:
             # Read the content of the uploaded CSV file
-            csv_file = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python')
-            #st.write(processed_csv.head(2))
-            # Clean and format a new 
-            processed_csv, excel_name = process_csv_file(csv_file)
-            st.write(processed_csv.head(2))
+            csv = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python')
+            # 1) Remove leading and trailing whitespaces from column names and all values in all columns
+            csv.columns = csv.columns.str.strip('"')
+            csv = csv.apply(lambda x: x.str.strip('"'))
+                
+            # 2) Remove "/" from 'Shipment reference'
+            csv['Shipment reference'] = csv['Shipment reference'].str.replace('/', '')
+                
+            # 3) Convert 'Number of Packages' to integer
+            csv['Number of Packages'] = csv['Number of Packages'].astype(int)
+                
+            # 4) Convert 'Total weight' to float with 1 decimal
+            csv['Total weight'] = csv['Total weight'].astype(float).round(1)
+                
+            # 5) Convert 'Total volume' to float with 3 decimals
+            csv['Total volume'] = csv['Total volume'].astype(float).round(3)
+                
+            # 6) List of columns to capitalize
+            columns_to_capitalize = ['Sender contact name', 'Sender city', 'Collection city', 'Receiver city', 'Delivery city', 'Tracking status']
+                
+            # Loop through specified columns and capitalize values
+            for col in columns_to_capitalize:
+                csv[col] = csv[col].str.capitalize()
+                
+            # Generate a timestamp
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                
+            # Specify the desired Excel file name
+            output_excel_file = f'TNT_Track_Report_{timestamp}.xlsx'
+            
+            st.write(csv.head(2))
+            st.write(f"{output_excel_file}")
 
         except Exception as e:
             # Handle exceptions, e.g., invalid CSV format
             st.error(f"Error reading CSV file: {e}")
         
         
-     #   
+     #   #processed_csv, excel_name = process_csv_file(csv_file)
         
         # Convert DataFrame to Excel file
       #  try:
