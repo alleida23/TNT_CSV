@@ -1,32 +1,29 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-import subprocess
-from io import BytesIO
 
 # Streamlit app title
-st.title("TNT Express Report CSV Converter")
+st.title("TNT Express Report CSV Transformer")
 
 # Additional information and instructions
 st.write(" ")
 st.write(f"### Instructions:")
 st.info("1. Upload a CSV file by clicking on 'Upload a CSV TNT Express Report'.")
-st.info("2. Press the 'Convert' button to process and download the converted CSV file.")
+st.info("2. Press the 'Transform' button to process and download the formatted CSV file.")
 st.write(" ")
 
 # File uploader for CSV file
 uploaded_file = st.file_uploader("Upload a CSV TNT Express Report", type=["csv"])
 
-# Initialize a session state variable to track if conversion has been done
-if "conversion_done" not in st.session_state:
-    st.session_state.conversion_done = False
+# Initialize a session state variable to track if transformation has been done
+if "transformation_done" not in st.session_state:
+    st.session_state.transformation_done = False
 
-# Convert button
-if st.button("Convert") or st.session_state.conversion_done:
+# Transform button
+if st.button("Transform") or st.session_state.transformation_done:
     if uploaded_file is not None:
         try:
             # 0) Read the content of the uploaded CSV file
-            # Use the specified separator
             csv = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python', quotechar='"')
 
             # 1) Remove leading and trailing whitespaces from column names and all values in all columns
@@ -55,21 +52,20 @@ if st.button("Convert") or st.session_state.conversion_done:
             # 7) Title-case the column names
             csv.columns = csv.columns.str.title()
 
-            # 8) Display count for each unique category in 'Tracking status'
-            tracking_status_count = csv['Tracking Status'].value_counts()
-            st.write("Tracking Status Count:")
-            st.write(tracking_status_count)
-            
-            # 9) Generate a timestamp to add to the title
-            timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-
-            # 10) Preview first 5 rows
+            # 8) Preview first 5 rows
             st.write("Preview:")
             st.write(csv.head(5))
 
-            # 11) Print the shape of the DataFrame
+            # 9) Print the shape of the DataFrame
             st.write(f"Shape: {csv.shape}")
 
+            # 10) Display count for each unique category in 'Tracking status'
+            tracking_status_count = csv['Tracking Status'].value_counts()
+            st.write("Tracking Status Count:")
+            st.write(tracking_status_count)
+
+            # 11) Generate a timestamp to add to the title
+            timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
             # Specify the desired CSV file name
             csv_file_name = f'TNT_Track_Report_{timestamp}.csv'
@@ -84,8 +80,8 @@ if st.button("Convert") or st.session_state.conversion_done:
                 help="Click here to download the CSV file."
             )
 
-            # Set the conversion flag to True
-            st.session_state.conversion_done = True
+            # Set the transformation flag to True
+            st.session_state.transformation_done = True
 
         except Exception as e:
             # Handle exceptions, e.g., invalid CSV format
@@ -100,10 +96,9 @@ if st.button("Clean"):
     csv = pd.DataFrame()
 
     # Clear session state variables
-    st.session_state.conversion_done = False
+    st.session_state.transformation_done = False
 
-    # Additional cleanup if needed
-    # ...
+    # Clear all displayed content
+    st.empty()
 
     st.success("All data and traces have been cleared.")
-
