@@ -52,7 +52,7 @@ if st.button("Transform") or st.session_state.transformation_done:
             # 7) Title-case the column names
             csv.columns = csv.columns.str.title()
 
-            st.write(csv['Return Shipment Number'].unique)
+            st.write(csv['Return Shipment Number'].unique())
 
             # 8) Check for empty columns and delete them
             empty_columns = [col for col in csv.columns if csv[col].empty]
