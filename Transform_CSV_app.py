@@ -8,13 +8,13 @@ from io import BytesIO
 #subprocess.run(["pip", "install", "openpyxl"])
 
 # Streamlit app title
-st.title("TNT Report CSV Converter")
+st.title("TNT Express Report CSV Converter")
 
 # Additional information and instructions
 st.write(" ")
 st.write(f"### Instructions:")
 st.info("1. Upload a CSV file by clicking on 'Upload a CSV TNT Express Report'.")
-st.info("2. Press the 'Convert' button to process and download the converted Excel file.")
+st.info("2. Press the 'Convert' button to process and download the converted Excel or CSV file.")
 st.write(" ")
 
 # File uploader for CSV file
@@ -29,11 +29,12 @@ if st.button("Convert") or st.session_state.conversion_done:
     if uploaded_file is not None:
         try:
             # 0) Read the content of the uploaded CSV file
-            csv = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python')
+            # Use the specified separator
+            csv = pd.read_csv(uploaded_file, sep=r',""', header=0, encoding="utf-8", engine='python', quotechar='"')
 
             # 1) Remove leading and trailing whitespaces from column names and all values in all columns
-            csv.columns = csv.columns.str.strip()
-            csv = csv.apply(lambda x: x.str.strip())
+            csv.columns = csv.columns.str.strip('"')
+            csv = csv.apply(lambda x: x.str.strip('"'))
 
             # 2) Remove "/" from 'Shipment reference'
             csv['Shipment reference'] = csv['Shipment reference'].str.replace('/', '')
