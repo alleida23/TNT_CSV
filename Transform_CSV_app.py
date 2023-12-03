@@ -54,8 +54,9 @@ if st.button("Transform") or st.session_state.transformation_done:
 
             # 8) Check for empty columns and delete them
             empty_columns = [col for col in csv.columns if csv[col].empty]
-            csv = csv.drop(columns=empty_columns)
-            st.write(f"Empty columns eliminated: {', '.join(empty_columns)}")
+            if empty_columns:
+                csv = csv.drop(columns=empty_columns)
+                st.write(f"Empty columns eliminated: {', '.join(empty_columns)}")
 
             # 9) Preview first 5 rows
             st.write("Preview:")
