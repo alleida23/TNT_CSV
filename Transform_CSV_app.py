@@ -2,7 +2,7 @@
 
 import streamlit as st
 from function_clean_CSV import process_csv_file, cleanup_temp_files
-import openpyxl
+#import openpyxl
 import pandas as pd
 
 # Streamlit app title
@@ -10,9 +10,9 @@ st.title("TNT Report CSV Converter To EXCEL")
 
 # Additional information and instructions
 st.write(" ")
-st.write(f"### Instructions:")
-st.write("1. Upload a CSV file by clicking on 'Upload a CSV TNT Express Report'.")
-st.write("2. Press the 'Convert' button to process and download the converted Excel file.")
+st.info(f"### Instructions:")
+st.info("1. Upload a CSV file by clicking on 'Upload a CSV TNT Express Report'.")
+st.info("2. Press the 'Convert' button to process and download the converted Excel file.")
 st.write(" ")
 
 # File uploader for CSV file
@@ -49,7 +49,7 @@ if st.button("Convert") or st.session_state.conversion_done:
     else:
         st.warning("No file uploaded. Please upload a CSV TNT Report.")
 else:
-    st.info("Upload a CSV TNT Report to convert.")
+    st.write("Upload a CSV TNT Report to convert.")
 
 # Clean button to remove temporary files and reset the app
 if st.button("Clean"):
